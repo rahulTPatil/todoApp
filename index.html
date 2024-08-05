@@ -1,3 +1,4 @@
+{{ block "index" .}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,24 +13,21 @@
         <fieldset>
             <h2>To Do App</h2>
             <input type="text" name="todoName" placeholder="Enter Todo Name" />
-            <button name="Add Item" type="submit">Add Todo</button>
+                <button name="Add Item" type="submit">Add Todo</button>
             <table>
-                {{ include .table }}
-                <caption>Active/Completed Todos</caption>
                 <tr>
                     <th>Todo Name</th>
                     <th>Added</th>
                     <th>Status</th>
                 </tr>
                 <tr>
-                    <td>Write Todo App</td>
-                    <td></td>
+                        <td>Try Linux Mint</td>
+                        <td>2024-01-01</td>
+                        <td>Completed</td>
                 </tr>
             </table>
-            {{ end }}
         </fieldset>
     </main>
-
 </body>
-
 </html>
+{{ end }}
