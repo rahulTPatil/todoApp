@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"io"
-	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -30,11 +28,40 @@ type Table struct {
 	Status bool
 }
 
+type Todo struct {
+	Name   string
+	Added  string
+	Status bool
+}
+
+func newTodo(Name string, Added string, Status bool) Todo {
+	return Todo{
+		Name:   Name,
+		Added:  Added,
+		Status: Status,
+	}
+}
+
+type Todos = []Todo
+
+type Data struct {
+	Todos Todos
+}
+
+func newData() Data {
+	return Data{
+		Todos: []Todo{
+			newTodo("Try GPG", "2024-08-07", false),
+			newTodo("Try ChatGPT", "2024-10-20", false),
+		},
+	}
+}
+
 func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
-	data := Table{Name: "Try Go!", Added: "2024-08-24", Status: true}
+	data := newData()
 
 	e.Renderer = newTemplate()
 
@@ -43,10 +70,9 @@ func main() {
 	})
 
 	e.POST("/addTodo", func(c echo.Context) error {
-		d := c.Param("todoName")
-		data2 := Table{Name: d, Added: time.Now().String(), Status: false}
-		fmt.Println(data2)
-		return c.Render(200, "table", data2)
+		d := c.FormValue("todoName")
+		data.Todos = append(data.Todos, newTodo(d, "2024-08-07", false))
+		return c.Render(200, "table", data)
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))

@@ -1,39 +1,47 @@
 {{ block "index" .}}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
-    <title>HTMX ToDoApp</title>
-</head>
-
-<body>
-    <main>
-        <fieldset>
-            <h2>To Do App</h2>
-            <input type="text" name="todoName" placeholder="Enter Todo Name" />
-            <button name="Add Item" type="submit" hx-post="/addTodo" hx-target="#tb1">Add Todo</button>
-            {{ block "table" .}}
-            <table id="tb1">
-                <tr>
-                    <th>Todo Name</th>
-                    <th>Added</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>Try Linux Mint</td>
-                    <td>2024-01-01</td>
-                    <td>Completed</td>
-                </tr>
-                <tr>
-                </tr>
-            </table>
-            {{ end }}
-        </fieldset>
-    </main>
-</body>
-
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css"> -->
+        <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+        <title>HTMX ToDoApp</title>
+    </head>
+    <body>
+        <div class="container">
+            <section class="nes-container with-title" style="margin: 10px">
+                <h3 class="title">To Do App</h3>
+                {{ template "form" . }}
+                {{ template "table" . }}
+            </section>
+        </div>
+    </body>
 </html>
 {{ end }}
+
+{{ block "form" . }}
+<form hx-post="/addTodo" hx-target="#table" hx-swap="outerHTML">
+    <div class="nes-field is-inline">
+        <label for="todoName">Enter Todo Name</label>
+        <input type="text" name="todoName" class="nes-input"/>
+    </div>
+    <button name="Add Item" type="submit" class="nes-btn is-primary">Add Todo</button>
+    <button name="Reset" type="reset" class="nes-btn">Reset</button>
+</form>
+{{ end }}
+
+{{ block "table" . }}
+<div id="table" class="row">
+    {{ range .Todos }}
+    <div class="card small">
+        <h3 class="doc section"><span>{{ .Name }}</span></h3>
+        Added: <span>{{ .Added }}</span>
+        Status: <span>{{ .Status }}</span>
+    </div>
+    {{ end }}
+</div>
+{{ end }}
+
