@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
     <title>HTMX ToDoApp</title>
 </head>
 
@@ -13,21 +14,26 @@
         <fieldset>
             <h2>To Do App</h2>
             <input type="text" name="todoName" placeholder="Enter Todo Name" />
-                <button name="Add Item" type="submit">Add Todo</button>
-            <table>
+            <button name="Add Item" type="submit" hx-post="/addTodo" hx-target="#tb1">Add Todo</button>
+            {{ block "table" .}}
+            <table id="tb1">
                 <tr>
                     <th>Todo Name</th>
                     <th>Added</th>
                     <th>Status</th>
                 </tr>
                 <tr>
-                        <td>Try Linux Mint</td>
-                        <td>2024-01-01</td>
-                        <td>Completed</td>
+                    <td>Try Linux Mint</td>
+                    <td>2024-01-01</td>
+                    <td>Completed</td>
+                </tr>
+                <tr>
                 </tr>
             </table>
+            {{ end }}
         </fieldset>
     </main>
 </body>
+
 </html>
 {{ end }}
